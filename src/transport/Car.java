@@ -2,21 +2,16 @@ package transport;
 
 import java.time.LocalDate;
 
-public class Car {
-    private final String brand;
-    private final String model;
+public class Car extends Transport {
+
+
     private double engineVolume;
-    private String color;
-    private final int year;
-    private final String country;
     private String transmission;
     private final String carType;
     private int id;
     private final int seatsCount;
     private String tires;
     private Insurance insurance;
-
-
 
 
     public static class Key {
@@ -31,37 +26,15 @@ public class Car {
     }
 
 
-    public Car(String brand, String model, double engineVolume, String color, int year, String country, String transmission, String carType, int id, int seatsCount, String tires) {
-        if (brand == null || brand.isEmpty() ) {
-            this.brand = "default";
-        } else {
-            this.brand = brand;
-        }
-        if (model == null || model.isEmpty() ) {
-            this.model = "default";
-        } else {
-            this.model = brand;
-        }
+    public Car(String brand, String model, String color, int year, String country, double engineVolume, String transmission, String carType, int id, int seatsCount, String tires, int maxSpeed) {
+        super(brand, model, color, year, country, maxSpeed);
+
         if (engineVolume <= 0) {
             this.engineVolume = 1.5;
         } else {
             this.engineVolume = engineVolume;
         }
-        if  (color == null || color.isEmpty()) {
-            this.color = "белый";
-        } else {
-            this.color = color;
-        }
-        if (year <= 0) {
-            this.year = 2000;
-        } else {
-            this.year = year;
-        }
-        if (country == null || country.isEmpty()) {
-            this.country = "default";
-        } else {
-            this.country = country;
-        }
+
         if (transmission == null || transmission.isEmpty()) {
             this.transmission = "default";
         } else {
@@ -84,7 +57,7 @@ public class Car {
         } else {
             this.seatsCount = seatsCount;
         }
-        if ( tires == null || tires.isEmpty()) {
+        if (tires == null || tires.isEmpty()) {
             this.tires = "default";
         } else {
             this.tires = tires;
@@ -92,10 +65,11 @@ public class Car {
 
     }
 
+
     public static class Insurance {
-        private LocalDate termOfInsurance;   // Срок действия страховки. Год, в который была оформлена страховка
-        private int insuranceValue;    // Стоимость страховки
-        private String insuranceNumber;
+        private final LocalDate termOfInsurance;   // Срок действия страховки. Год, в который была оформлена страховка
+        private final int insuranceValue;    // Стоимость страховки
+        private final String insuranceNumber;
 
         public Insurance(LocalDate termOfInsurance, int insuranceValue, String insuranceNumber) {
             if (termOfInsurance == null) {
@@ -114,6 +88,7 @@ public class Car {
                 this.insuranceNumber = insuranceNumber;
             }
         }
+
         public void checkInsurance() {
             if (termOfInsurance.isBefore(LocalDate.now())) {
                 System.out.println("Срок действия страховки истек! Срочно нужно оформить новую!");
@@ -139,26 +114,7 @@ public class Car {
     @Override
     public String toString() {
         return "Марка автомобиля: " + brand + ", модель: " + model + ", объем двигателя: " + engineVolume + ", цвет: " + color + ", год производства: " + year + ", страна производства: " + country + ". Коробка передач: " + transmission + ", тип кузова: " + carType
-                + ", ID: " + id + ", количество сидений: " + seatsCount + ", тип резины: " + tires + ". " + getInsurance();
-    }
-
-    public String getBrand() {
-        return brand;
-    }
-
-
-    public String getModel() {
-        return model;
-    }
-
-
-    public int getYear() {
-        return year;
-    }
-
-
-    public String getCountry() {
-        return country;
+                + ", ID: " + id + ", количество сидений: " + seatsCount + ", тип резины: " + tires + ". Максимальнеая скорость: " + maxSpeed + ". " + insurance;
     }
 
 
@@ -180,13 +136,6 @@ public class Car {
         this.engineVolume = engineVolume;
     }
 
-    public String getColor() {
-        return color;
-    }
-
-    public void setColor(String color) {
-        this.color = color;
-    }
 
     public String getTransmission() {
         return transmission;
@@ -212,6 +161,9 @@ public class Car {
         return insurance;
     }
 
+    public void setInsurance(Insurance insurance) {
+        this.insurance = insurance;
+    }
 
     public String changeTires(int month) {      // Метод "Сменить шины".
         if (month == 1 || month == 2 || month == 12 || month == 11) {
